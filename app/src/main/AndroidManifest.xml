@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="pm.storm.fsexplorer" >
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/firestorm_icon_512"
+        android:label="FS Explorer"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="pm.storm.fsexplorer.ListActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="pm.storm.fsexplorer.DeviceActivity"
+            android:label="@string/title_activity_device" >
+        </activity>
+        <activity
+            android:name="pm.storm.fsexplorer.AttributeActivity"
+            android:label="@string/title_activity_attribute" >
+        </activity>
+        <activity
+            android:name="pm.storm.fsexplorer.Splash"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_splash" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
