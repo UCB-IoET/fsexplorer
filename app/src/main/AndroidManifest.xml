@@ -9,7 +9,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/firestorm_icon_512"
-        android:label="FS Explorer"
+        android:label="Firestorm"
         android:theme="@style/AppTheme" >
         <activity
             android:name="pm.storm.fsexplorer.ListActivity"
@@ -22,6 +22,11 @@
         <activity
             android:name="pm.storm.fsexplorer.AttributeActivity"
             android:label="@string/title_activity_attribute" >
+        </activity>
+
+        <activity
+            android:name="pm.storm.fsexplorer.CoffeeActivity"
+            android:label="Coffee Maker" >
         </activity>
         <activity
             android:name="pm.storm.fsexplorer.Splash"
