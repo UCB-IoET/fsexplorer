@@ -6,17 +6,6 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="pm.storm.fsexplorer.AttributeActivity">
 
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="false"
-        android:id="@+id/fmtTable"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentLeft="true"></TableLayout>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,7 +13,49 @@
         android:text="attribute.fqn"
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignEnd="@+id/fmtTable" />
+        android:layout_alignParentLeft="true" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:id="@+id/fieldList"
+        android:layout_above="@+id/writeButton"></LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="write"
+        android:id="@+id/writeButton"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="0dp"
+        android:layout_toLeftOf="@+id/readButton"
+        android:layout_marginRight="8dp"
+        android:onClick="wbOnClick" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="read"
+        android:id="@+id/readButton"
+        android:layout_marginLeft="8px"
+        android:layout_alignTop="@+id/notifyButton"
+        android:layout_centerHorizontal="true"
+        android:onClick="rbOnClick" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="notify"
+        android:id="@+id/notifyButton"
+        android:layout_marginLeft="8dp"
+        android:layout_alignTop="@+id/writeButton"
+        android:layout_toEndOf="@+id/readButton"
+        android:layout_toRightOf="@+id/readButton"
+        android:onClick="nbOnClick" />
 
 </RelativeLayout>

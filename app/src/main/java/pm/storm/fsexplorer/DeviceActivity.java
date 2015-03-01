@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.Context;
 import android.content.Intent;
+import android.os.ParcelUuid;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -37,13 +38,14 @@ public class DeviceActivity extends ActionBarActivity {
         ((ExpandableListView)findViewById(R.id.serviceList)).setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-               /* UUID svc = tgt.getServices().get(groupPosition);
+                System.out.println("CLICKED");
+                UUID svc = tgt.getServices().get(groupPosition);
                 UUID attr = tgt.getAttributes(svc).get(childPosition);
                 Intent intent = new Intent(DeviceActivity.this, AttributeActivity.class);
-                intent.putExtra("svc", svc);
-                intent.putExtra("attr", attr);
+                intent.putExtra("svc", new ParcelUuid(svc));
+                intent.putExtra("attr", new ParcelUuid(attr));
                 intent.putExtra("firestorm", tgt);
-                startActivity(intent);*/
+                startActivity(intent);
                 return true;
             }
         });
@@ -203,7 +205,7 @@ public class DeviceActivity extends ActionBarActivity {
 
         @Override
         public boolean isChildSelectable(int groupPosition, int childPosition) {
-            return false;
+            return true;
         }
 
         @Override
