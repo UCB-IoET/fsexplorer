@@ -23,6 +23,11 @@
             android:name="pm.storm.fsexplorer.AttributeActivity"
             android:label="@string/title_activity_attribute" >
         </activity>
+
+        <activity
+            android:name="pm.storm.fsexplorer.CoffeeActivity"
+            android:label="Coffee Maker" >
+        </activity>
         <activity
             android:name="pm.storm.fsexplorer.Splash"
             android:configChanges="orientation|keyboardHidden|screenSize"

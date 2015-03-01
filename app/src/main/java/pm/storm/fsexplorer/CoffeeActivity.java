@@ -1,30 +1,32 @@
 package pm.storm.fsexplorer;
 
-import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.ParcelUuid;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.UUID;
 
-
-public class AttributeActivity extends ActionBarActivity {
+/**
+ * Created by michael on 3/1/15.
+ */
+public class CoffeeActivity extends ActionBarActivity {
     private Firestorm tgt;
     private BluetoothGatt gatt;
     UUID svc;
@@ -32,11 +34,12 @@ public class AttributeActivity extends ActionBarActivity {
     String sSvc;
     String sAttr;
     ManifestResolver.ManifestFormatEntry [] fields;
-    View [] fieldUI;
+    View[] fieldUI;
+    int coffeeAmount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_attribute);
+        setContentView(R.layout.activity_coffee);
         Intent intent = getIntent();
         tgt = (Firestorm) intent.getParcelableExtra("firestorm");
         gatt = tgt.getDevice().connectGatt(this, false, gatt_cb);
@@ -51,7 +54,7 @@ public class AttributeActivity extends ActionBarActivity {
     public void genfields() {
         fields = ManifestResolver.getInstance(this).getFields(sSvc, sAttr);
         fieldUI = new View[fields.length];
-        System.out.println("MFARR "+fields+" len "+fields.length);
+//        System.out.println("MFARR "+fields+" len "+fields.length);
         for (int i = 0; i < fields.length; i++) {
             fieldUI[i] = addField(fields[i].name, fields[i].desc, fields[i].getTypeAsString(), fields[i].isNumeric());
         }
@@ -59,26 +62,34 @@ public class AttributeActivity extends ActionBarActivity {
     public void onBackPressed()
     {
         gatt.disconnect();
-        System.out.println("Back in attr activity");
         super.onBackPressed();
     }
 
     private View addField(String name, String desc, String type, boolean isNumeric) {
         View fv;
-        LayoutInflater inflater = (LayoutInflater) AttributeActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        fv = inflater.inflate(R.layout.attr_field, null);
-        ((TextView) fv.findViewById(R.id.fieldName)).setText(name);
-        ((TextView) fv.findViewById(R.id.fieldDesc)).setText(desc);
-        ((TextView) fv.findViewById(R.id.type)).setText(type);
-        if (isNumeric) {
-            ((EditText) fv.findViewById(R.id.editValue)).setInputType(InputType.TYPE_CLASS_NUMBER);
+        LayoutInflater inflater = (LayoutInflater) CoffeeActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        fv = inflater.inflate(R.layout.cof_field, null);
+        TextView text = ((TextView) fv.findViewById(R.id.fieldName));
+        text.setText(name);
+        if (name.equals("secH20")) {
+            text.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+//                    Toast.makeText(getBaseContext(), "click secH20", Toast.LENGTH_SHORT).show();
+                    CoffeeActivity.this.showDialog();
+                }
+            });
         }
-        LinearLayout layout = (LinearLayout) findViewById(R.id.fieldList);
+        TextView field = ((TextView) fv.findViewById(R.id.fieldDesc));
+        field.setText(desc);
+
+        LinearLayout layout = (LinearLayout) findViewById(R.id.cofFieldList);
         fv.setId(0);
         fv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         layout.addView(fv);
         return fv;
     }
+
+
 
     BluetoothGattCallback gatt_cb = new BluetoothGattCallback() {
         @Override
@@ -135,23 +146,80 @@ public class AttributeActivity extends ActionBarActivity {
     public void wbOnClick(View v) {
         byte [] chardata = new byte[20];
         chardata[0] = (byte) 0x80;
+        chardata[1] = (byte) 0x90;
         for (ManifestResolver.ManifestFormatEntry mfe : fields) {
             System.out.println(mfe);
         }
         if (send(chardata)) {
-            Toast.makeText(getBaseContext(), "Sent Write", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Test Success", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getBaseContext(), "Failed to Write", Toast.LENGTH_LONG).show();
         }
         //Get the values of all the fields
     }
 
-    public void rbOnClick(View v) {
+    public void showDialog()
+    {
+        final AlertDialog.Builder popDialog = new AlertDialog.Builder(this);
+        final SeekBar seek = new SeekBar(this);
+        seek.setMax(8000);
+
+//        popDialog.setIcon(android.R.drawable.btn_star_big_on);
+        popDialog.setTitle("How much coffee? (0-2 cups)");
+        popDialog.setView(seek);
+
+        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+                //Do something here with new value
+                CoffeeActivity.this.coffeeAmount = progress;
+            }
+
+            public void onStartTrackingTouch(SeekBar arg0) {
+                // TODO Auto-generated method stub
+
+            }
+
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+
+
+        // Button OK
+        popDialog.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(getBaseContext(), "Trying command", Toast.LENGTH_SHORT).show()
+                        CoffeeActivity.this.sendMakeCoffee();
+                        dialog.dismiss();
+                    }
+
+                });
+        popDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+        popDialog.create();
+        popDialog.show();
 
     }
 
-    public void nbOnClick(View v) {
-
+    protected void sendMakeCoffee() {
+        byte[] data = new byte[2];
+        data[0] = (byte) (coffeeAmount & 0xff);
+        data[1] = (byte) (coffeeAmount >> 8);
+        double cups = ((double) coffeeAmount) * (2.0/8000.0);
+        String shortCups = Double.toString(cups).substring(0,4);
+        if (send(data)) {
+            Toast.makeText(getBaseContext(), "Making " + shortCups + " cups of coffee!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getBaseContext(), "Can't find coffee machine", Toast.LENGTH_LONG).show();
+        }
     }
 
     protected boolean send(byte[] data) {

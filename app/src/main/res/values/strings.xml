@@ -7,6 +7,9 @@
     <string name="action_search">Scan</string>
     <string name="title_activity_device">Services</string>
     <string name="title_activity_attribute">Attribute I/O</string>
-    <string name="title_activity_splash">FS Explorer</string>
+    <string name="title_activity_splash">FS</string>
+    <string name="coffee_amount">How much coffee?</string>
+    <string name="make">Make coffee</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

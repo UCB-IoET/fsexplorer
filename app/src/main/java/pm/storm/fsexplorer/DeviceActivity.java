@@ -41,7 +41,13 @@ public class DeviceActivity extends ActionBarActivity {
                 System.out.println("CLICKED");
                 UUID svc = tgt.getServices().get(groupPosition);
                 UUID attr = tgt.getAttributes(svc).get(childPosition);
-                Intent intent = new Intent(DeviceActivity.this, AttributeActivity.class);
+                Intent intent;
+                if (attr.toString().startsWith("00004c0f")) {
+                    intent = new Intent(DeviceActivity.this, CoffeeActivity.class);
+                } else {
+                    intent = new Intent(DeviceActivity.this, AttributeActivity.class);
+                }
+
                 intent.putExtra("svc", new ParcelUuid(svc));
                 intent.putExtra("attr", new ParcelUuid(attr));
                 intent.putExtra("firestorm", tgt);
