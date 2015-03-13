@@ -10,7 +10,8 @@
         android:text="FieldName"
         android:id="@+id/fieldName"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="2dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -20,7 +21,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="false"
         android:minWidth="140dp"
-        android:layout_above="@+id/fieldDesc" />
+        android:gravity="bottom|left"
+        android:layout_alignBottom="@+id/fieldDesc" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,7 +31,7 @@
         android:text="Field Description"
         android:id="@+id/fieldDesc"
         android:layout_below="@+id/fieldName"
-        android:layout_toStartOf="@+id/editText"
+        android:layout_toStartOf="@+id/editValue"
         android:layout_toRightOf="@+id/type"
         android:paddingLeft="4dp" />
 

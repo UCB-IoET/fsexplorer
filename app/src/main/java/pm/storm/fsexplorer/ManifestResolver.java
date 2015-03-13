@@ -176,6 +176,7 @@ public class ManifestResolver
                     }
                 } else {
                     int len = data[offset];
+                    System.out.println("Got pstr len"+len);
                     StringBuilder rv = new StringBuilder();
                     for (int i = 0; i < len; i++) {
                         int val = data[offset + i];
@@ -188,13 +189,38 @@ public class ManifestResolver
                     return rv.toString();
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
+                e.printStackTrace();
                 return "<ERR>";
             }
             return "";
         }
 
         public void setAsString(byte [] data, String value) {
+            if (type != FType.PSTR) {
+                long val = Integer.parseInt(value);
 
+                switch (type) {
+                    case U32:
+                    case S32:
+                        data[offset + 2] = (byte) ((val>>16) & 0xFF);
+                        data[offset + 3] = (byte) ((val>>24) & 0xFF);
+                    case U16:
+                    case S16:
+                        data[offset + 1] = (byte) ((val>>8) & 0xFF);
+                    case U8:
+                    case S8:
+                        data[offset + 0] = (byte) (val & 0xFF);
+                }
+            } else {
+                int len = value.length();
+                int maxlen = 19 - offset;
+                if (maxlen < len) len = maxlen;
+
+                data[offset] = (byte) len;
+                for (int i = 0; i < len; i++) {
+                    data[offset+1+i] = (byte) value.charAt(i);
+                }
+            }
         }
         public boolean isNumeric() {
             return type != FType.PSTR;

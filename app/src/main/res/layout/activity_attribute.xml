@@ -11,18 +11,25 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="attribute.fqn"
-        android:id="@+id/textView"
+        android:id="@+id/attrFQN"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentStart="true"
-        android:id="@+id/fieldList"
-        android:layout_above="@+id/writeButton"></LinearLayout>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_above="@+id/writeButton"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/attrFQN"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/fieldList"></LinearLayout>
+    </ScrollView>
 
     <Button
         android:layout_width="wrap_content"
@@ -47,7 +54,7 @@
         android:layout_centerHorizontal="true"
         android:onClick="rbOnClick" />
 
-    <Button
+    <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="notify"
@@ -56,6 +63,8 @@
         android:layout_alignTop="@+id/writeButton"
         android:layout_toEndOf="@+id/readButton"
         android:layout_toRightOf="@+id/readButton"
-        android:onClick="nbOnClick" />
+        android:onClick="nbOnClick"
+        android:textOff="Notify"
+        android:textOn="Notify" />
 
 </RelativeLayout>
